@@ -1,7 +1,8 @@
 from config import BOARD_SIZE, categories, image_size
-from tensorflow.keras import models
 import numpy as np
 import tensorflow as tf
+from tensorflow import keras
+from keras import models
 
 class TicTacToePlayer:
     def get_move(self, board_state):
