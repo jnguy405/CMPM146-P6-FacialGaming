@@ -95,21 +95,36 @@ class UserWebcamPlayer:
             raise e
     
     def _get_emotion(self, img) -> int:
-        # Your code goes here
-        #
-        # img an np array of size NxN (square), each pixel is a value between 0 to 255
-        # you have to resize this to image_size before sending to your model
-        # to show the image here, you can use:
-        # import matplotlib.pyplot as plt
-        # plt.imshow(img, cmap='gray', vmin=0, vmax=255)
-        # plt.show()
-        #
-        # You have to use your saved model, use resized img as input, and get one classification value out of it
-        # The classification value should be 0, 1, or 2 for neutral, happy or surprise respectively
+        
+        import cv2
+        from pathlib import Path
+        
 
-        # return an integer (0, 1 or 2), otherwise the code will throw an error
-        return 1
-        pass
+    # 1) Load model once (pick newest .keras in results/)
+        if not hasattr(self, "_model"):
+            results_dir = Path("results")
+            candidates = sorted(results_dir.glob("*.keras"), key=lambda p: p.stat().st_mtime)
+            if not candidates:
+                raise FileNotFoundError("No .keras model found in results/. Train first with python train.py")
+            model_path = str(candidates[-1])
+            self._model = tf.keras.models.load_model(model_path)
+            print(f"[INFO] Loaded model: {model_path}")
+
+    # 2) Resize NxN -> (150,150)
+    # image_size is (H, W); cv2.resize expects (W, H)
+        resized = cv2.resize(img, (image_size[1], image_size[0]), interpolation=cv2.INTER_AREA)
+
+    # 3) Grayscale -> RGB (3 channels)
+        rgb = np.stack([resized, resized, resized], axis=-1)  # (H, W, 3)
+
+    # 4) Batch dimension + float32
+        x = rgb.astype(np.float32)[None, ...]  # (1, H, W, 3)
+
+    # 5) Predict + argmax
+        probs = self._model.predict(x, verbose=0)
+        emotion = int(np.argmax(probs, axis=-1)[0])
+
+        return emotion
     
     def get_move(self, board_state):
         row, col = None, None
