@@ -39,4 +39,8 @@ class BasicModel(Model):
     def _compile_model(self):
         # Your code goes here
         # you have to compile the keras model, similar to the example in the writeup
-        pass
+        self.model.compile(
+            optimizer=RMSprop(learning_rate=0.001), # Keras documentation (Adam, RMSprop, or SGD with learning rate 0.01 and momentum 0.0)
+            loss='categorical_crossentropy',
+            metrics=['accuracy']
+        )
