@@ -1,5 +1,7 @@
 categories = ['neutral', 'happy', 'surprise']
-transfer_categories = ['dogs', 'cats']
+transfer_categories = ['sushi', 'sandwich']
+
+# transfer data set https://www.kaggle.com/datasets/brtknr/sushisandwich?resource=download
 
 train_directory = 'train'
 test_directory = 'test'
