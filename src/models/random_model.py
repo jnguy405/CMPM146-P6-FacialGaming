@@ -28,8 +28,7 @@ class RandomModel(Model):
             outputs=basic.layers[-2].output
         )
         
-        # Freeze the weights
-        basic.trainable = False
+        basic.trainable = True
         
         # Build new model
         model = Sequential()
