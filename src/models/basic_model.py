@@ -13,23 +13,22 @@ class BasicModel(Model):
         model.add(Rescaling(1./255, input_shape=input_shape))
 
         # First convolutional layer - finds basic patterns/edges
-        model.add(layers.Conv2D(16, (3, 3), activation='relu'))
+        model.add(layers.Conv2D(4, (3, 3), activation='relu'))
         model.add(layers.MaxPooling2D((2, 2))) # MaxPooling downsamples by taking max values
 
         # Second convolutional layer - finds complex patterns
-        model.add(layers.Conv2D(32, (3, 3), activation='relu'))
+        model.add(layers.Conv2D(8, (3, 3), activation='relu'))
         model.add(layers.MaxPooling2D((2, 2)))
 
         # Third convolutional layer - finds combinations of the complex patterns
-        model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+        model.add(layers.Conv2D(8, (3, 3), activation='relu'))
         model.add(layers.MaxPooling2D((2, 2)))
 
         # Flatten the maps - dimension converter / reorganizer
         model.add(layers.Flatten())
         
         # Connection layer with dropout
-        model.add(layers.Dense(128, activation='relu'))
-        model.add(layers.Dropout(0.5))
+        model.add(layers.Dense(32, activation='relu'))
         
         # Softmax layer - converts raw scores into class probabilities between 0 and 1
         model.add(layers.Dense(categories_count, activation='softmax'))
