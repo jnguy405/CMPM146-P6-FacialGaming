@@ -26,13 +26,13 @@ def plot_history_diff(initial_hist, transfered_hist):
     assert epochs_initial == epochs_transfered, "The two models have been tried with different epochs"
 
     plt.figure(figsize = (24, 6))
-    plt.plot(epochs_initial, val_acc_initial, 'b', label = 'Random Model Accuracy')
-    plt.plot(epochs_initial, val_acc_transfered, 'r', label = 'Transfered Model Accuracy')
+    plt.plot(epochs_initial, val_acc_initial, 'b', label = 'Random Model Accuracy (without Transfer)')
+    plt.plot(epochs_initial, val_acc_transfered, 'r', label = 'Transfered Model Accuracy (with Transfer)')
     plt.grid(True)
     plt.legend()
     plt.xlabel('Epoch')
     plt.ylabel('Validation Accuracy')
-    plt.title('Transfer Learning vs Random Initialization')
+    plt.title('Far Transfer from Facial Recognition to Sushi vs. Sandwich')
     plt.show()
 
 if __name__ == "__main__":
